@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NoCap Detector</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 280px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .logo {
+      font-size: 28px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .tagline {
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .status {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .status-row + .status-row {
+      margin-top: 8px;
+    }
+
+    .status-label {
+      color: #aaa;
+    }
+
+    .status-value {
+      font-weight: 600;
+    }
+
+    .status-value.ready {
+      color: #4ade80;
+    }
+
+    .status-value.loading {
+      color: #fbbf24;
+    }
+
+    .legend {
+      margin-bottom: 16px;
+    }
+
+    .legend-title {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      padding: 6px 0;
+    }
+
+    .legend-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .legend-badge.cap {
+      background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%);
+    }
+
+    .legend-badge.sus {
+      background: linear-gradient(135deg, #ffa500 0%, #ffb733 100%);
+    }
+
+    .legend-desc {
+      color: #ccc;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 10px;
+      color: #666;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer a {
+      color: #888;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #fff;
+    }
+
+    .disclaimer {
+      color: #888;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .accuracy {
+      background: rgba(74, 222, 128, 0.1);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .accuracy-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #4ade80;
+    }
+
+    .accuracy-label {
+      font-size: 10px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="logo">🧢</span>
+    <div>
+      <div class="title">NoCap Detector</div>
+      <div class="tagline">Your timeline, no cap</div>
+    </div>
+  </div>
+
+  <div class="accuracy">
+    <div class="accuracy-value" id="accuracy">--</div>
+    <div class="accuracy-label">Model Accuracy</div>
+  </div>
+
+  <div class="status">
+    <div class="status-row">
+      <span class="status-label">Status</span>
+      <span class="status-value loading" id="status">Loading...</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Tweets Analyzed</span>
+      <span class="status-value" id="tweets-count">0</span>
+    </div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-title">Badge Guide</div>
+    <div class="legend-item">
+      <span class="legend-badge cap">🧢 Cap</span>
+      <span class="legend-desc">Likely sponsored content</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-badge sus">🟡 Sus</span>
+      <span class="legend-desc">Might be sponsored</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="disclaimer">Experimental ML predictions - may not be accurate</div>
+    Made by <a href="https://twitter.com/nezuron_" target="_blank">@nezuron_</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

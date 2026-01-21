@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "NoCap Detector",
+  "version": "1.0.0",
+  "description": "Detect undisclosed sponsored tweets. See what's real, no cap.",
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "*://twitter.com/*",
+    "*://x.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://twitter.com/*", "*://x.com/*"],
+      "js": ["inject.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "lib/tf.min.js",
+        "lib/use.min.js",
+        "detector.js",
+        "content-main.js",
+        "styles.css",
+        "data/reference_vectors.json",
+        "model/model.json",
+        "model/vocab.json",
+        "model/group1-shard1of7",
+        "model/group1-shard2of7",
+        "model/group1-shard3of7",
+        "model/group1-shard4of7",
+        "model/group1-shard5of7",
+        "model/group1-shard6of7",
+        "model/group1-shard7of7"
+      ],
+      "matches": ["*://twitter.com/*", "*://x.com/*"]
+    }
+  ]
+}

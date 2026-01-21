@@ -1,0 +1,140 @@
+/**
+ * NoCap Detector - Badge Styles
+ */
+
+/* Base badge styling */
+.nocap-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  margin-left: 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.4;
+  vertical-align: middle;
+  cursor: default;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.nocap-badge:hover {
+  transform: scale(1.05);
+}
+
+/* Badge icon */
+.nocap-badge-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* Badge text */
+.nocap-badge-text {
+  letter-spacing: 0.3px;
+}
+
+/* Cap badge (sponsored) - Red gradient */
+.nocap-badge-cap {
+  background: linear-gradient(135deg, #ff4444 0%, #ff6b6b 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(255, 68, 68, 0.25);
+}
+
+.nocap-badge-cap:hover {
+  box-shadow: 0 3px 8px rgba(255, 68, 68, 0.35);
+}
+
+/* Sus badge (uncertain) - Orange/Yellow gradient */
+.nocap-badge-sus {
+  background: linear-gradient(135deg, #ffa500 0%, #ffb733 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(255, 165, 0, 0.25);
+}
+
+.nocap-badge-sus:hover {
+  box-shadow: 0 3px 8px rgba(255, 165, 0, 0.35);
+}
+
+/* No Cap badge (organic) - Green gradient - optional, not shown by default */
+.nocap-badge-nocap {
+  background: linear-gradient(135deg, #44bb44 0%, #66cc66 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(68, 187, 68, 0.25);
+}
+
+.nocap-badge-nocap:hover {
+  box-shadow: 0 3px 8px rgba(68, 187, 68, 0.35);
+}
+
+/* Confidence tooltip styling */
+.nocap-badge::after {
+  content: attr(data-confidence) "% confidence";
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.nocap-badge:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Position relative for tooltip */
+.nocap-badge {
+  position: relative;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .nocap-badge-cap {
+    background: linear-gradient(135deg, #cc3333 0%, #ff5555 100%);
+  }
+
+  .nocap-badge-sus {
+    background: linear-gradient(135deg, #cc8800 0%, #ffaa22 100%);
+  }
+
+  .nocap-badge::after {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+  }
+}
+
+/* Ensure badges don't break tweet layout */
+[data-testid="User-Name"] {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Animation for newly added badges */
+@keyframes nocap-badge-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.nocap-badge {
+  animation: nocap-badge-appear 0.2s ease-out;
+}
