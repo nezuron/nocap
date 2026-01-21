@@ -22,64 +22,72 @@
    * Check if a tweet is a reply (not a main post)
    */
   function isReply(tweetElement) {
-    // Method 1: Check for "Replying to" anywhere in the tweet's inner text
+    // Method 1: Check for "Replying to" link element (most reliable)
+    // Twitter shows replies with a "Replying to @username" link
+    const replyingToLinks = tweetElement.querySelectorAll('a[href^="/"]');
+    for (const link of replyingToLinks) {
+      const parent = link.parentElement;
+      if (parent && parent.textContent) {
+        const text = parent.textContent.toLowerCase();
+        if (text.includes('replying to') || text.includes('en réponse') || text.includes('en respuesta')) {
+          return true;
+        }
+      }
+    }
+
+    // Method 2: Check for "Replying to" anywhere in the tweet's inner text
     const tweetInnerText = tweetElement.innerText || '';
     if (tweetInnerText.includes('Replying to') ||
         tweetInnerText.includes('replying to') ||
-        tweetInnerText.includes('En réponse à') ||  // French
-        tweetInnerText.includes('En respuesta a')) { // Spanish
+        tweetInnerText.includes('En réponse à') ||
+        tweetInnerText.includes('En respuesta a')) {
       return true;
     }
 
-    // Method 2: Check if we're in a thread view (URL contains /status/)
-    // and this is NOT the main tweet (main tweet is usually the first one)
+    // Method 3: Check for the reply context div that appears above tweet text
+    // Twitter wraps "Replying to" in a div before the actual tweet content
+    const tweetTextContainer = tweetElement.querySelector('[data-testid="tweetText"]');
+    if (tweetTextContainer) {
+      // Check siblings before the tweet text for reply indicators
+      let sibling = tweetTextContainer.parentElement?.previousElementSibling;
+      while (sibling) {
+        const siblingText = sibling.textContent?.toLowerCase() || '';
+        if (siblingText.includes('replying to')) {
+          return true;
+        }
+        sibling = sibling.previousElementSibling;
+      }
+    }
+
+    // Method 4: Check if we're in a thread view and this isn't the main tweet
     const currentURL = window.location.href;
     if (currentURL.includes('/status/')) {
-      // We're viewing a specific tweet/thread
-      // Check if this tweet is the main tweet or a reply
       const tweetLink = tweetElement.querySelector('a[href*="/status/"] time');
       if (tweetLink) {
-        const tweetHref = tweetLink.closest('a').getAttribute('href');
-        // If the tweet's own status URL doesn't match the page URL, it's a reply
+        const tweetHref = tweetLink.closest('a')?.getAttribute('href');
         if (tweetHref && !currentURL.includes(tweetHref)) {
           return true;
         }
       }
     }
 
-    // Method 3: Check for vertical thread line (blue line connecting replies)
-    // Look for the connector element that appears above replies
+    // Method 5: Check for vertical thread connector line
     const parentCell = tweetElement.closest('[data-testid="cellInnerDiv"]');
     if (parentCell) {
+      // Check for the blue connecting line in previous sibling
       const prevElement = parentCell.previousElementSibling;
       if (prevElement) {
-        // Check if previous element has a connecting line
-        const hasConnector = prevElement.querySelector('[style*="background-color: rgb(29, 155, 240)"]') ||
-                            prevElement.querySelector('[style*="border-color"]');
+        const hasConnector = prevElement.querySelector('[style*="background-color: rgb(29, 155, 240)"]');
         if (hasConnector) {
           return true;
         }
       }
     }
 
-    // Method 4: Check for social context that mentions replying
+    // Method 6: Check for social context mentioning reply
     const socialContext = tweetElement.querySelector('[data-testid="socialContext"]');
-    if (socialContext && socialContext.textContent) {
-      const contextLower = socialContext.textContent.toLowerCase();
-      if (contextLower.includes('repl')) {
-        return true;
-      }
-    }
-
-    // Method 5: Check if there are any elements with "reply" in data-testid
-    const replyElements = tweetElement.querySelectorAll('[data-testid*="reply"]');
-    // This catches "reply" button, but we want reply indicators, not the reply action button
-    // So we skip the actual reply button
-    for (const el of replyElements) {
-      const testId = el.getAttribute('data-testid');
-      if (testId && testId !== 'reply' && testId.includes('reply')) {
-        return true;
-      }
+    if (socialContext?.textContent?.toLowerCase().includes('repl')) {
+      return true;
     }
 
     return false;

@@ -11,9 +11,9 @@
   // Configuration
   const CONFIG = {
     thresholds: {
-      cap: 0.6,      // >60% = Cap (sponsored)
-      sus: 0.4,      // 40-60% = Sus (uncertain)
-      noCap: 0.4     // <40% = No Cap (organic)
+      cap: 0.75,     // >75% = Cap (sponsored)
+      sus: 0.6,      // 60-75% = Sus (uncertain)
+      noCap: 0.6     // <60% = No Cap (organic)
     }
   };
 

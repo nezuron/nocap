@@ -44,7 +44,7 @@ NoCap/
 - **Reference Vectors**: Average embeddings of sponsored/organic tweets used for classification
 - **Cosine Similarity**: Compares tweet embedding to reference vectors
 - **Confidence Score**: (sponsoredSim - organicSim + 1) / 2, normalized to 0-1
-- **Thresholds**: >60% = Cap, 40-60% = Sus, <40% = No Cap
+- **Thresholds**: >75% = Cap, 60-75% = Sus, <60% = No Cap
 
 ## Commands
 ```bash
