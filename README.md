@@ -133,9 +133,12 @@ NoCap/
 
 ## Contributing
 
-1. Add more diverse training examples
-2. Report false positives/negatives
-3. Suggest threshold adjustments
+**Help make NoCap smarter!** The model improves with more training examples.
+
+- **See a sponsored tweet we missed?** Add it to the training data
+- **Got a false positive?** Report it so we can fix it
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to submit examples.
 
 ## Disclaimer
 
