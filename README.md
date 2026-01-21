@@ -2,7 +2,7 @@
 
 **Your timeline, no cap.**
 
-A Chrome extension that uses AI to detect undisclosed sponsored content on Twitter/X in real-time.
+A Chrome extension that uses AI to detect sponsored content on Twitter/X in real-time.
 
 ## The Problem
 
