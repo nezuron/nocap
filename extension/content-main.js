@@ -97,17 +97,42 @@
     if (classification.label === 'cap') {
       badge.classList.add('nocap-badge-cap');
       badge.innerHTML = `<span class="nocap-badge-icon">🧢</span><span class="nocap-badge-text">Cap</span>`;
-      badge.title = `${confidencePercent}% likely sponsored`;
+      badge.title = `${confidencePercent}% likely sponsored · Click to report if wrong`;
     } else if (classification.label === 'sus') {
       badge.classList.add('nocap-badge-sus');
       badge.innerHTML = `<span class="nocap-badge-icon">🟡</span><span class="nocap-badge-text">Sus</span>`;
-      badge.title = `${confidencePercent}% - might be sponsored`;
+      badge.title = `${confidencePercent}% - might be sponsored · Click to report if wrong`;
     } else {
       return null;
     }
 
     badge.setAttribute('data-confidence', confidencePercent);
+    badge.style.cursor = 'pointer';
     return badge;
+  }
+
+  /**
+   * Open GitHub issue to report incorrect classification
+   */
+  function reportIncorrect(tweetText, label, confidence) {
+    const correctLabel = label === 'cap' || label === 'sus' ? 'organic' : 'sponsored';
+    const title = encodeURIComponent(`Training Data: ${correctLabel} tweet misclassified`);
+    const body = encodeURIComponent(
+`## Incorrect Classification
+
+**Tweet text:**
+\`\`\`
+${tweetText.substring(0, 500)}
+\`\`\`
+
+**NoCap said:** ${label} (${confidence}%)
+**Should be:** ${correctLabel}
+
+---
+*Submitted via NoCap feedback button*`
+    );
+
+    window.open(`https://github.com/nezuron/nocap/issues/new?title=${title}&body=${body}`, '_blank');
   }
 
   /**
@@ -122,6 +147,15 @@
 
     const badge = createBadge(classification);
     if (badge) {
+      const tweetText = extractTweetText(tweetElement) || '';
+      const confidence = Math.round(classification.confidence * 100);
+
+      badge.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        reportIncorrect(tweetText, classification.label, confidence);
+      });
+
       insertionPoint.appendChild(badge);
     }
   }
